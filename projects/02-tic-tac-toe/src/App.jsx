@@ -6,34 +6,31 @@ import { checkWinnerFrom } from "./logic/board";
 import { WinnerModal } from "./Components/WinnerModal";
 import { checkEndGame } from "./logic/board";
 import { resetGameStorage, saveGameToStorage } from "./logic/storage";
-
+import "./App.css";
 function App() {
+  const [board, setBoard] = useState(() => {
+    const boardFromStorage = window.localStorage.getItem("board");
+    if (boardFromStorage) return JSON.parse(boardFromStorage);
+    return Array(9).fill(null);
+  });
 
-  const [board, setBoard] = useState(()=>{
-    const boardFromStorage =window.localStorage.getItem('board')
-    if (boardFromStorage) return JSON.parse(boardFromStorage)
-    return Array(9).fill(null)
-  })
-
-  const [turn, setTurn] = useState(()=>{
-    const turnFromStorage = window.localStorage.getItem('turn')
-    return turnFromStorage ?? TURNS.X
+  const [turn, setTurn] = useState(() => {
+    const turnFromStorage = window.localStorage.getItem("turn");
+    return turnFromStorage ?? TURNS.X;
   });
 
   const [winner, setWinner] = useState(null);
 
-  const resetGame = () =>{
+  const resetGame = () => {
     setBoard(Array(9).fill(null));
-    setTurn(TURNS.X)
+    setTurn(TURNS.X);
     setWinner(null);
-    resetGameStorage()
-  }
+    resetGameStorage();
+  };
 
-
-
-  const updateBoard = (index)=>{
+  const updateBoard = (index) => {
     //no actualizamos si tiene algo o hay ganador
-    if (board[index] || winner) return
+    if (board[index] || winner) return;
 
     //actualizar tablero
     const newBoard = [...board];
@@ -45,17 +42,17 @@ function App() {
     setTurn(newTurn);
 
     //guardar partida
-    saveGameToStorage({turn:newTurn, board:newBoard})
+    saveGameToStorage({ turn: newTurn, board: newBoard });
 
     //revisar ganador
     const newWinner = checkWinnerFrom(newBoard);
     if (newWinner) {
-      confetti()
+      confetti();
       setWinner(newWinner);
-    }else if (checkEndGame(newBoard)){
+    } else if (checkEndGame(newBoard)) {
       setWinner(false); //empate
     }
-  }
+  };
 
   return (
     <main className="board">
@@ -64,11 +61,7 @@ function App() {
       <section className="game">
         {board.map((square, index) => {
           return (
-            <Square 
-              key={index} 
-              index={index}
-              updateBoard={updateBoard}
-            >
+            <Square key={index} index={index} updateBoard={updateBoard}>
               {square}
             </Square>
           );
@@ -76,8 +69,8 @@ function App() {
       </section>
 
       <section className="turn">
-        <Square isSelected={turn===TURNS.X}>{TURNS.X}</Square>
-        <Square isSelected={turn===TURNS.O}>{TURNS.O}</Square>
+        <Square isSelected={turn === TURNS.X}>{TURNS.X}</Square>
+        <Square isSelected={turn === TURNS.O}>{TURNS.O}</Square>
       </section>
 
       <WinnerModal resetGame={resetGame} winner={winner}></WinnerModal>
