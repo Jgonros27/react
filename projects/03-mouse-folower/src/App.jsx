@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-function App() {
+
+const FollowMouse = ()=>{
   const [enable, setEnable] = useState(false);
 
   const [position, setPosition] = useState({x:0,y:0});
@@ -20,12 +21,8 @@ function App() {
     }
   },[enable]);
 
-  function handleClick() {
-    setEnable(!enable);
-  }
-
   return (
-    <main>
+    <>
       <div
         style={{
           position: "absolute",
@@ -41,9 +38,20 @@ function App() {
           transform: `translate(${position.x}px,${position.y}px)`
         }}
       />
-      <button onClick={handleClick}>
+      <button onClick={()=>setEnable(!enable)}>
         {enable ? "Desactivar" : "Activar"} seguir puntero
       </button>
+    </>
+  )
+}
+
+
+function App() {
+  
+
+  return (
+    <main>
+      <FollowMouse/>
     </main>
   );
 }
