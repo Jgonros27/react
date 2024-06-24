@@ -1,0 +1,41 @@
+.products{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.products ul{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 1rem;
+}
+
+.products li{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    padding: 1rem;
+    img{
+        width: 100%;
+        aspect-ratio: 16/9;
+        border-radius: 4px ;
+    }
+    button{
+        color: white;
+    }
+    span{
+        font-size: 1rem;
+        opacity: .9;
+    }
+}
+
+.quantity{
+    display: inline-block;
+    width: 50px;
+    border: gray 1px solid;
+    margin: 10px;
+}
